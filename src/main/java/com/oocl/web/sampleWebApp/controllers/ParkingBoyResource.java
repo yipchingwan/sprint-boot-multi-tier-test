@@ -27,12 +27,20 @@ public class ParkingBoyResource {
     }
 
     @PostMapping
-    public ResponseEntity<String> create(@RequestBody(required = false) ParkingBoy parkingBoy) throws URISyntaxException {
+    public ResponseEntity<String> create(@RequestBody(required = false) ParkingBoy parkingBoy) throws Exception {
         CheckCreateParkingIsVaild parkingBoyVaildation = new CheckCreateParkingIsVaild(parkingBoy);
         if(parkingBoyVaildation.isVaild()){
-            parkingBoyRepository.save(parkingBoy);
-            return ResponseEntity.created(new URI("/parkingboys/"+parkingBoy.getEmployeeId())).body("Created");
+           try{
+               parkingBoyRepository.save(parkingBoy);
+               return ResponseEntity.created(new URI("/parkingboys/"+parkingBoy.getEmployeeId())).body("Created");
+           }
+           catch (Exception e){
+               return ResponseEntity.badRequest().body("Invaild parking boy");
+           }
+
         }
+
         return ResponseEntity.badRequest().body("Invaild parking boy");
     }
+
 }

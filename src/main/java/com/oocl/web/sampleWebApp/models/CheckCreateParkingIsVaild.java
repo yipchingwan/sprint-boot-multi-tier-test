@@ -16,9 +16,11 @@ public class CheckCreateParkingIsVaild {
         return parkingBoy;
     }
     public boolean isVaild(){
-        if(this.parkingBoy==null || this.parkingBoy.getEmployeeId().length()>64 || this.parkingBoy.getEmployeeId()==null){
+        if(this.parkingBoy==null){
             return false;
         }
         return true;
     }
+
+
 }
