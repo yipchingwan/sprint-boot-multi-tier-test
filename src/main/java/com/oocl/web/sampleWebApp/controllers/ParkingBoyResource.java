@@ -2,6 +2,7 @@ package com.oocl.web.sampleWebApp.controllers;
 
 import com.oocl.web.sampleWebApp.domain.ParkingBoy;
 import com.oocl.web.sampleWebApp.domain.ParkingBoyRepository;
+import com.oocl.web.sampleWebApp.models.CheckCreateParkingIsVaild;
 import com.oocl.web.sampleWebApp.models.ParkingBoyResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -26,8 +27,12 @@ public class ParkingBoyResource {
     }
 
     @PostMapping
-    public ResponseEntity<String> create(@RequestBody ParkingBoy parkingBoy) throws URISyntaxException {
-        parkingBoyRepository.save(parkingBoy);
-        return ResponseEntity.created(new URI("/parkingboys/"+parkingBoy.getEmployeeId())).body("Created");
+    public ResponseEntity<String> create(@RequestBody(required = false) ParkingBoy parkingBoy) throws URISyntaxException {
+        CheckCreateParkingIsVaild parkingBoyVaildation = new CheckCreateParkingIsVaild(parkingBoy);
+        if(parkingBoyVaildation.isVaild()){
+            parkingBoyRepository.save(parkingBoy);
+            return ResponseEntity.created(new URI("/parkingboys/"+parkingBoy.getEmployeeId())).body("Created");
+        }
+        return ResponseEntity.badRequest().body("Invaild parking boy");
     }
 }

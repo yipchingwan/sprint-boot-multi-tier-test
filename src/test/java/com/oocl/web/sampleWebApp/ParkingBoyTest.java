@@ -29,7 +29,7 @@ public class ParkingBoyTest {
     @Test
     public void should_return_201_when_created_parking_boy() throws Exception {
         //Given
-        final ParkingBoy boy = parkingBoyRepository.save(new ParkingBoy("boy"));
+        final ParkingBoy boy = new ParkingBoy("boy");
         final ObjectMapper objectMapper = new ObjectMapper();
         //When
         final MvcResult result = mvc.perform(MockMvcRequestBuilders.post("/parkingboys").
@@ -42,15 +42,26 @@ public class ParkingBoyTest {
     @Test
     public void should_return_400_when_created_NULL_parking_boy() throws Exception {
         //Given
-        final ParkingBoy boy = parkingBoyRepository.save(new ParkingBoy("boy"));
+        final ParkingBoy boy = null;
         final ObjectMapper objectMapper = new ObjectMapper();
         //When
         final MvcResult result = mvc.perform(MockMvcRequestBuilders.post("/parkingboys").
-                contentType(MediaType.APPLICATION_JSON).content(objectMapper.writeValueAsString(null))).andReturn();
+                contentType(MediaType.APPLICATION_JSON).content(objectMapper.writeValueAsString(boy))).andReturn();
 
         //Then
         assertEquals(400, result.getResponse().getStatus());
     }
 
+    @Test
+    public void should_return_400_when_created_parking_boy_with_ID_length_more_than_64() throws Exception {
+        //Given
+        final ParkingBoy boy = new ParkingBoy("fnsdjfnjsdklfasssmkldskmsdkfmsdklfnkldsfnkldsnlfdsfndsklfnsdklnfklsdnklfdlnfnsdklfnklsdnfklsdnklfsdfnsdklfnsdklnfksdlnfklsd");
+        final ObjectMapper objectMapper = new ObjectMapper();
+        //When
+        final MvcResult result = mvc.perform(MockMvcRequestBuilders.post("/parkingboys").
+                contentType(MediaType.APPLICATION_JSON).content(objectMapper.writeValueAsString(boy))).andReturn();
 
+        //Then
+        assertEquals(400, result.getResponse().getStatus());
+    }
 }
