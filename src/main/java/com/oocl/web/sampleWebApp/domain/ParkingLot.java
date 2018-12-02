@@ -8,7 +8,7 @@ public class ParkingLot {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "parking_lot__id", length = 64, unique = true, nullable = false)
+    @Column(name = "parking_lot_id", length = 64, unique = true, nullable = false)
     private String parkingLotId;
 
     private Integer capacity;
