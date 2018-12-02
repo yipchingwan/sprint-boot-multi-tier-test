@@ -3,6 +3,7 @@ package com.oocl.web.sampleWebApp;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.oocl.web.sampleWebApp.domain.ParkingBoy;
 import com.oocl.web.sampleWebApp.domain.ParkingBoyRepository;
+import com.oocl.web.sampleWebApp.models.ParkingBoyResponse;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +15,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
+import static com.oocl.web.sampleWebApp.WebTestUtil.getContentAsObject;
 import static org.junit.Assert.assertEquals;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -29,6 +31,24 @@ public class ParkingBoyTest {
     @Autowired
     private MockMvc mvc;
 
+    @Test
+    public void should_get_parking_boys() throws Exception {
+        // Given
+        final ParkingBoy boy = parkingBoyRepository.save(new ParkingBoy("boy"));
+
+        // When
+        final MvcResult result = mvc.perform(MockMvcRequestBuilders
+                .get("/parkingboys"))
+                .andReturn();
+
+        // Then
+        assertEquals(200, result.getResponse().getStatus());
+
+        final ParkingBoyResponse[] parkingBoys = getContentAsObject(result, ParkingBoyResponse[].class);
+
+        assertEquals(1, parkingBoys.length);
+        assertEquals("boy", parkingBoys[0].getEmployeeId());
+    }
     @Test
     public void should_return_201_when_created_parking_boy() throws Exception {
         //Given
@@ -80,8 +100,11 @@ public class ParkingBoyTest {
                  .content(objectMapper.writeValueAsString(boy))
                  .contentType(MediaType.APPLICATION_JSON))
                  .andExpect(status().isBadRequest());
-
-
-
     }
+
+
+
+
+
+
 }
