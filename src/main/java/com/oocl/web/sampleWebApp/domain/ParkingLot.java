@@ -13,5 +13,27 @@ public class ParkingLot {
 
     private Integer capacity;
 
+    public ParkingLot() {
+    }
 
+    public ParkingLot(String parkingLotId, Integer capacity) {
+        this.parkingLotId = parkingLotId;
+        this.capacity = capacity;
+    }
+
+    public String getParkingLotId() {
+        return parkingLotId;
+    }
+
+    public void setParkingLotId(String parkingLotId) {
+        this.parkingLotId = parkingLotId;
+    }
+
+    public Integer getCapacity() {
+        return capacity;
+    }
+
+    public void setCapacity(Integer capacity) {
+        this.capacity = capacity;
+    }
 }
