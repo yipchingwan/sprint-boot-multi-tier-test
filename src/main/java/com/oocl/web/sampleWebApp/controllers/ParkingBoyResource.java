@@ -25,5 +25,9 @@ public class ParkingBoyResource {
         return ResponseEntity.ok(parkingBoys);
     }
 
-
+    @PostMapping
+    public ResponseEntity<String> create(@RequestBody ParkingBoy parkingBoy) throws URISyntaxException {
+        parkingBoyRepository.save(parkingBoy);
+        return ResponseEntity.created(new URI("/parkingboys/"+parkingBoy.getEmployeeId())).body("Created");
+    }
 }

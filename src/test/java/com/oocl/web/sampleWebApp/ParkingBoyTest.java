@@ -40,7 +40,7 @@ public class ParkingBoyTest {
     }
 
     @Test
-    public void should_return_405_when_created_NULL_parking_boy() throws Exception {
+    public void should_return_400_when_created_NULL_parking_boy() throws Exception {
         //Given
         final ParkingBoy boy = parkingBoyRepository.save(new ParkingBoy("boy"));
         final ObjectMapper objectMapper = new ObjectMapper();
@@ -49,6 +49,8 @@ public class ParkingBoyTest {
                 contentType(MediaType.APPLICATION_JSON).content(objectMapper.writeValueAsString(null))).andReturn();
 
         //Then
-        assertEquals(405, result.getResponse().getStatus());
+        assertEquals(400, result.getResponse().getStatus());
     }
+
+
 }
